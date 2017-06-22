@@ -4,6 +4,12 @@ This field type generates a list of icons from which to choose using a selection
 
 The file may be uploaded manually, or a path may be specified. Specifying a path allows for icon updates by replacing the file on the server.
 
+![Field Type Settings](/screenshots/screenshot-settings.png?raw=true "Field Type Settings")
+
+![Icon List](/screenshots/screenshot-icon-field.png?raw=true "Icons are displayed in a dropdown list for selection")
+
+![Icon Selection](/screenshots/screenshot-selection.png?raw=true "Icons may be returned as a prefixed name, or as an svg element")
+
 ### Compatibility
 
 This ACF field type is compatible with:
