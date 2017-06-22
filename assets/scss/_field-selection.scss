@@ -1,0 +1,52 @@
+//
+// Current Select
+// --------------------------------------------------
+.acf-icomoon_select-selection {
+	background-color: $white;
+	border: 1px solid $border;
+	padding: 1em;
+	.icon-preview {
+		svg {
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: 1em;
+		}
+		p {
+			display: inline-block;
+			vertical-align: middle;
+		}
+	}
+}
+
+.acf-icomoon_select-icon-list {
+	display: none;
+	background-color: darken($white, 6%);
+	margin-top: 1em;
+	max-height: 300px;
+	overflow: auto;
+	.icons-description {
+		padding: .5em;
+	}
+	.choice {
+		border-radius: 3px;
+		background-color: $white;
+		display: inline-block;
+		border: 1px solid $border;
+		padding: 1em;
+		margin: .5em;
+		cursor: pointer;
+		transition: all 200ms ease;
+		&.active {
+			background-color: $black;
+			color: $white;
+		}
+		&:hover {
+			background-color: $black;
+			color: $white;
+			transition: all 200ms ease;
+			svg path {
+				fill: $white;
+			}
+		}
+	}
+}

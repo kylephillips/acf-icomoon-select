@@ -1,0 +1,30 @@
+//
+// Mixins
+// --------------------------------------------------
+@mixin clearfix {
+	zoom: 1;
+	&:before,
+	&:after {
+		content: " "; /* 1 */
+		display: table; /* 2 */
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+@mixin unstyled {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+@mixin smooth {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+@mixin appearance {
+	-webkit-appearance: none;
+	appearance: none;
+}
