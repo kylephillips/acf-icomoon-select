@@ -176,7 +176,6 @@ class acf_field_icomoon_select extends acf_field {
 		$path = ( $field['selection_json_type'] == 'selection_json_path' )
 			? $field['selection_json_path'] : get_attached_file($field['selection_json_file']);
 		$choices = $this->get_icomoon_json($path, $field);
-
 		$value = esc_attr($field['value']);
 		$out = '<div class="acf-icomoon_select-selection">';
 		
@@ -426,16 +425,12 @@ class acf_field_icomoon_select extends acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$value
 	*/
+
+	/*
 	function load_value( $value, $post_id, $field ) {
-		if ( is_admin() ) return $value;
-		$path = ( $field['selection_json_type'] == 'selection_json_path' )
-			? $field['selection_json_path'] : get_attached_file($field['selection_json_file']);
-		$choices = $this->get_icomoon_json($path, $field);
-		if ( !array_key_exists($value, $choices) ) return '';
-		if ( $field['display_type'] == 'icon' ) return $choices[$value]->name_prefixed;
-		if ( $field['display_type'] == 'paths_raw' ) return $choices[$value]->icon_paths;
-		return $choices[$value]->icon_paths_formatted;
+		return $value
 	}
+	*/
 	
 	
 	
@@ -482,32 +477,20 @@ class acf_field_icomoon_select extends acf_field {
 	*  @return	$value (mixed) the modified value
 	*/
 		
-	/*
+	
 	
 	function format_value( $value, $post_id, $field ) {
-		
-		// bail early if no value
-		if( empty($value) ) {
-		
-			return $value;
-			
-		}
-		
-		
-		// apply setting
-		if( $field['font_size'] > 12 ) { 
-			
-			// format the value
-			// $value = 'something';
-		
-		}
-		
-		
-		// return
-		return $value;
+		if( empty($value) )  return $value;		
+		$path = ( $field['selection_json_type'] == 'selection_json_path' )
+			? $field['selection_json_path'] : get_attached_file($field['selection_json_file']);
+		$choices = $this->get_icomoon_json($path, $field);
+		if ( !array_key_exists($value, $choices) ) return '';
+		if ( $field['display_type'] == 'icon' ) return $choices[$value]->name_prefixed;
+		if ( $field['display_type'] == 'paths_raw' ) return $choices[$value]->icon_paths;
+		return $choices[$value]->icon_paths_formatted;
 	}
 	
-	*/
+	
 	
 	
 	/*
