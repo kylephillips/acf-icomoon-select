@@ -36,14 +36,12 @@
 		var value = $(element).attr('data-acf-icomoon-choice');
 		var choiceField = $(element).closest('.acf-input').find('[data-acf-icomoon-choice-field]');
 		choiceField.val(value);
-		console.log('choiceField:', choiceField[0],'value: ' + choiceField.val());
 
 		populatePreview(e, value);
 	}
 
 	function toggleSelectionList(e, visible)
 	{
-		console.log(e.target);
 		var fieldgroup = $(e.target).closest('.acf-input');
 
 		if ( visible ){
@@ -79,7 +77,6 @@
 	function clearField(target)
 	{
         var fieldgroup = $(target).closest('.acf-input');
-		console.log('clearField:', fieldgroup, target);
 
 		fieldgroup.find('[data-acf-icomoon-choice]').removeClass('active');
 		fieldgroup.find('[data-icomoon-icon-preview]').empty().hide();
