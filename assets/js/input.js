@@ -1,79 +1,95 @@
 (function($){
-	
-	
+
+
 	function initialize_field( $el ) {
-		
+
 		//$el.doStuff();
-		
+
 	}
 
-	$(document).on('click', '[data-acf-icomoon-choice]', function(e){
-		e.preventDefault();
-		populateField($(this));
-	});
-
+    // user opens iconlist
 	$(document).on('click', '[data-acf-icomoon-select-choose-button]', function(e){
 		e.preventDefault();
-		toggleSelectionList(true);
+		toggleSelectionList(e, true);
 	});
 
+    // user closes iconlist
 	$(document).on('click', '[data-acf-icomoon-select-cancel-button]', function(e){
 		e.preventDefault();
-		toggleSelectionList(false);
+		toggleSelectionList(e, false);
 	});
 
+    // user chooses icon from open list
+    $(document).on('click', '[data-acf-icomoon-choice]', function(e){
+        e.preventDefault();
+        populateField(e, $(this));
+    });
+
+    // user removes previously choosen icon
 	$(document).on('click', '[data-acf-icomoon-remove-choice]', function(e){
 		e.preventDefault();
-		clearField();
+		clearField($(this));
 	});
 
-	function populateField(element)
+	function populateField(e, element)
 	{
 		var value = $(element).attr('data-acf-icomoon-choice');
-		$('[data-acf-icomoon-choice-field]').val(value);
-		populatePreview(value);
+		var choiceField = $(element).closest('.acf-input').find('[data-acf-icomoon-choice-field]');
+		choiceField.val(value);
+		console.log('choiceField:', choiceField[0],'value: ' + choiceField.val());
+
+		populatePreview(e, value);
 	}
 
-	function toggleSelectionList(visible)
+	function toggleSelectionList(e, visible)
 	{
+		console.log(e.target);
+		var fieldgroup = $(e.target).closest('.acf-input');
+
 		if ( visible ){
-			$('.acf-icomoon_select-icon-list').show();
-			$('[data-acf-icomoon-select-choose-button]').hide();
-			$('[data-acf-icomoon-select-cancel-button]').show();
+			fieldgroup.find('.acf-icomoon_select-icon-list').show();
+			fieldgroup.find('[data-acf-icomoon-select-choose-button]').hide();
+			fieldgroup.find('[data-acf-icomoon-select-cancel-button]').show();
 			return;
 		}
-		$('[data-acf-icomoon-select-cancel-button]').hide();
-		$('[data-acf-icomoon-select-choose-button]').show();
-		$('.acf-icomoon_select-icon-list').hide();
+		fieldgroup.find('[data-acf-icomoon-select-cancel-button]').hide();
+		fieldgroup.find('[data-acf-icomoon-select-choose-button]').show();
+		fieldgroup.find('.acf-icomoon_select-icon-list').hide();
 	}
 
-	function populatePreview(choice)
+	function populatePreview(e, choice)
 	{
 		var svg;
-		$.each($('[data-acf-icomoon-choice]'), function(){
+		var html;
+		var fieldgroup = $(e.target).closest('.acf-input');
+
+		$.each(fieldgroup.find('[data-acf-icomoon-choice]'), function(){
 			if ( $(this).attr('data-acf-icomoon-choice') == choice ){
 				$(this).addClass('active');
 				svg = $(this).find('.svg');
 			}
 		});
-		var html = $(svg).html();
+		html = $(svg).html();
 		html += '<p>' + choice + '<br><a href="#" data-acf-icomoon-remove-choice>Remove</a></p>';
-		$('[data-icomoon-icon-preview]').html(html).show();
-		$('.acf-icomoon_select-icon-list').hide();
-		$('[data-acf-icomoon-select-cancel-button]').hide();
+		fieldgroup.find('[data-icomoon-icon-preview]').html(html).show();
+		fieldgroup.find('.acf-icomoon_select-icon-list').hide();
+		fieldgroup.find('[data-acf-icomoon-select-cancel-button]').hide();
 	}
 
-	function clearField()
+	function clearField(target)
 	{
-		$('[data-acf-icomoon-choice]').removeClass('active');
-		$('[data-icomoon-icon-preview]').empty().hide();
-		$('[data-acf-icomoon-choice-field]').val('');
-		$('[data-acf-icomoon-select-choose-button]').show();
+        var fieldgroup = $(target).closest('.acf-input');
+		console.log('clearField:', fieldgroup, target);
+
+		fieldgroup.find('[data-acf-icomoon-choice]').removeClass('active');
+		fieldgroup.find('[data-icomoon-icon-preview]').empty().hide();
+		fieldgroup.find('[data-acf-icomoon-choice-field]').val('');
+		fieldgroup.find('[data-acf-icomoon-select-choose-button]').show();
 	}
-	
-	
+
+
 	if( typeof acf.add_action !== 'undefined' ) {
-	
+
 		/*
 		*  ready append (ACF5)
 		*
@@ -87,7 +103,7 @@
 		*  @param	$el (jQuery selection) the jQuery element which contains the ACF fields
 		*  @return	n/a
 		*/
-		
+
 		acf.add_action('ready append', function( $el ){
 
 			/**
@@ -116,24 +132,24 @@
 				$(file_choice).hide();
 				$(path_choice).show();
 			}
-			
+
 			// search $el for fields of type 'FIELD_NAME'
 			acf.get_fields({ type : 'icomoon_select'}, $el).each(function(){
-				
+
 				initialize_field( $(this) );
-				
+
 			});
-			
+
 		});
-		
-		
+
+
 	} else {
-		
-		
+
+
 		/*
 		*  acf/setup_fields (ACF4)
 		*
-		*  This event is triggered when ACF adds any new elements to the DOM. 
+		*  This event is triggered when ACF adds any new elements to the DOM.
 		*
 		*  @type	function
 		*  @since	1.0.0
@@ -144,18 +160,18 @@
 		*
 		*  @return	n/a
 		*/
-		
+
 		$(document).on('acf/setup_fields', function(e, postbox){
-			
+
 			$(postbox).find('.field[data-field_type="icomoon_select"]').each(function(){
-				
+
 				initialize_field( $(this) );
-				
+
 			});
-		
+
 		});
-	
-	
+
+
 	}
 
 
